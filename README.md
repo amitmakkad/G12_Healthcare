@@ -1,4 +1,4 @@
-# HealthCare Portal
+# All Inclusive HealthCare Portal
 As in Covid-19 pandemic we have seen that quality HealthCare is one of the basic need of every person so, this project aims to provide quality healthcare to every person.
 It solves the problems which we generally faced during pandemic like
 * unable to take appointment with doctors without going hospitals.
@@ -34,19 +34,42 @@ A doctor can
 * add post description or refer medicines to user after appointment.
 * chat with users.
 
+<h2>Contributers:-</h2>
+
+ - Amit Kumar Makkad
+ - Bhavya Contractor
+ - Mihir karandikar
+ - Priyansh Jaseja
+
 This project is made as a part of course "Database and Information Systems" in Indian Institute of Technology, Indore.
-This project is made by
-* Amit Kumar Makkad
-* Bhavya Contractor
-* Mihir Karandikar
-* Priyansh Jaseja
 
-# For downloading
-you can clone this project in your local machine.
+## How to run
+Clone the repo locally
+```
+git clone git@github.com:amitmakkad/G12_Healthcare.git
+```
+Now go to repo directory
+```
+cd G12_Healthcare/
+```
+Create a Virtual environment and activate it (for linux)
+```
+python -m venv myenv 
+virtualenv myenv   
+source myenv/bin/activate
+```
+Install dependencies
+```
+pip install -r requirements.txt
+```
 
-Requirements
-* Python (recommended version 3.7.6 and above)
-* pip install -r requirements.txt (Please run your command prompt/terminal as administrator)
-
-you can make your own database using sql codes in MySQL Workbench.
-Now, you can run the python script and open 'localhost:8000' in browser.
+Go To Mysql
+```
+mysql -u root -p
+USE cs207_healthcare_manangement;
+```
+If database not exists, create database using MySQL Scripts folder and set credentials in main.py <br><br>
+Run the app
+```
+python main.py
+```
