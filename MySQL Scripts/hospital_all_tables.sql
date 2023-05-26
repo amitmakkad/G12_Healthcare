@@ -78,17 +78,17 @@ CREATE TABLE IF NOT EXISTS `OxygenDetails` (
   `UserDOB` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`UserId`));
   
-  -- Date format is YYYY-MM-DD
+
     
     CREATE TABLE IF NOT EXISTS `TimeSlots` (
   `Time_ID` int auto_increment,
-  `Doc_ID` varchar(100),
+  `doc_id` varchar(100),
   `Start_Time` time,
   `End_Time` time,
   `Appt_Date` date,
   `Availability` int,
   PRIMARY KEY (`Time_ID`),
-  FOREIGN KEY (`Doc_id`) REFERENCES Doctor(`doc_ID`)
+  FOREIGN KEY (`doc_id`) REFERENCES doctor(`doc_id`)
   );
   
   
@@ -102,9 +102,9 @@ CREATE TABLE IF NOT EXISTS `OxygenDetails` (
   `PostDescription` varchar(100),
   `Acceptance_Status` int,
   PRIMARY KEY (`UserID`,`Time_ID`),
-  FOREIGN KEY (`UserID`) REFERENCES User(`UserID`),
+  FOREIGN KEY (`UserID`) REFERENCES user(`UserID`),
    FOREIGN KEY (`Time_ID`) REFERENCES TimeSlots(`Time_ID`),
-   FOREIGN KEY (`Doc_id`) REFERENCES Doctor(`doc_ID`)
+   FOREIGN KEY (`Doc_id`) REFERENCES doctor(`doc_ID`)
   );
   
   CREATE TABLE IF NOT EXISTS `chat` (
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS vaccine_book (
     PRIMARY KEY (`dose`, `UserID`),
     FOREIGN KEY (`hosp_id`) REFERENCES Hospital(`hosp_id`),
     FOREIGN KEY (`vaccine_time_id`) REFERENCES vaccine_slots(`vaccine_time_id`),
-    FOREIGN KEY (`UserID`) REFERENCES User(`UserID`)
+    FOREIGN KEY (`UserID`) REFERENCES user(`UserID`)
 );
 
 CREATE TABLE IF NOT EXISTS `Doctor_Reviews` (
@@ -147,14 +147,9 @@ CREATE TABLE IF NOT EXISTS `Doctor_Reviews` (
   `Rating` INT,
   PRIMARY KEY (`Time_ID`),
   FOREIGN KEY (`Time_ID`) REFERENCES TimeSlots(`Time_ID`),
-  FOREIGN KEY (`doc_ID`) REFERENCES Doctor(`doc_ID`)
+  FOREIGN KEY (`doc_ID`) REFERENCES doctor(`doc_ID`)
   );
   
   
   
   
-  
-#Acceptance_Status = 0 ... Request has been sent and is pending
-#Acceptance Status = 1 ... Request has been accepted
-#Acceptance Status = 2 ... Request has been declined
-#Acceptance Status = 3 ... Request has been cancelled

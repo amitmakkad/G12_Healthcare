@@ -42,7 +42,7 @@ VALUES
 ('doctor2@hospital.com','09:20:00','11:00:00','2021-11-07',1);
 
 
-INSERT INTO `User` (UserID,UserName,UserPassword)
+INSERT INTO `user` (UserID,UserName,UserPassword)
 VALUES
 (1,'user 1',1231),
 (2,'user 2',1232),
@@ -50,7 +50,7 @@ VALUES
 (4,'user 4',1234);
 
 
-INSERT INTO `appointment` (UserID,Time_ID,doc_ID,MeetLink,PreDescription,PostDescription,Acceptance_Status)
+INSERT INTO `Appointment` (UserID,Time_ID,doc_ID,MeetLink,PreDescription,PostDescription,Acceptance_Status)
 VALUES
 (1,23,'doctor1@hospital.com','post23.meet.com','pre23','',1),
 (2,24,'doctor1@hospital.com','post24@meet.com','pre24','',1),

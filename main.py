@@ -19,7 +19,7 @@ Session(app)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-myconn = mysql.connector.connect(host = "localhost", user = "root",passwd = "",database="cs207_healthcare_management", auth_plugin="",buffered=True)
+myconn = mysql.connector.connect(host = "localhost", user = "root",passwd = "amit@186",database="cs207_healthcare_management", auth_plugin='mysql_native_password',buffered=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
@@ -80,13 +80,13 @@ def register_page_update():
 
         if len(hospName) >= 1:
             hospName = hospDetails['hospName']
-            update_query = "UPDATE hospital SET hospName='%s' WHERE hosp_ID='%s'" % (hospName, hosp_ID)
+            update_query = "UPDATE Hospital SET hospName='%s' WHERE hosp_ID='%s'" % (hospName, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
             cur.close()
         if len(hospEmail) >= 1:
-            update_query = "UPDATE hospital SET hospEmail='%s' WHERE hosp_ID='%s'" % (hospEmail, hosp_ID)
+            update_query = "UPDATE Hospital SET hospEmail='%s' WHERE hosp_ID='%s'" % (hospEmail, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
@@ -94,7 +94,7 @@ def register_page_update():
 
         try:
             hospPhone = hospDetails['hospPhone']
-            update_query = "UPDATE hospital SET hospPhone='%s' WHERE hosp_ID='%s'" % (hospPhone, hosp_ID)
+            update_query = "UPDATE Hospital SET hospPhone='%s' WHERE hosp_ID='%s'" % (hospPhone, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
@@ -103,33 +103,33 @@ def register_page_update():
             print("No Phone")
 
         if len(hospAddress) >= 1:
-            update_query = "UPDATE hospital SET hospAddress='%s' WHERE hosp_ID='%s'" % (hospAddress, hosp_ID)
+            update_query = "UPDATE Hospital SET hospAddress='%s' WHERE hosp_ID='%s'" % (hospAddress, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
             cur.close()
         if len(hosp_city) >= 1:
-            update_query = "UPDATE hospital SET hosp_city='%s' WHERE hosp_ID='%s'" % (hosp_city, hosp_ID)
+            update_query = "UPDATE Hospital SET hosp_city='%s' WHERE hosp_ID='%s'" % (hosp_city, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
             cur.close()
 
-        update_query = "UPDATE hospital SET hosp_state='%s' WHERE hosp_ID='%s'" % (hosp_state, hosp_ID)
+        update_query = "UPDATE Hospital SET hosp_state='%s' WHERE hosp_ID='%s'" % (hosp_state, hosp_ID)
         cur = myconn.cursor()
         cur.execute(update_query)
         myconn.commit()
         cur.close()
 
         if len(hosp_description) >= 1:
-            update_query = "UPDATE hospital SET hosp_description='%s' WHERE hosp_ID='%s'" % (hosp_description, hosp_ID)
+            update_query = "UPDATE Hospital SET hosp_description='%s' WHERE hosp_ID='%s'" % (hosp_description, hosp_ID)
             cur = myconn.cursor()
             cur.execute(update_query)
             myconn.commit()
             cur.close()
 
     hosp_ID = session["hosp_ID"]
-    sql_query = "SELECT * FROM hospital WHERE hosp_ID ='%s'" % (int(hosp_ID))
+    sql_query = "SELECT * FROM Hospital WHERE hosp_ID ='%s'" % (int(hosp_ID))
     cur = myconn.cursor()
     cur.execute(sql_query)
     hospDetails = cur.fetchall()
@@ -576,8 +576,8 @@ def doctor_login():
             myconn.commit()
             cur.close()
 
-            query = '''SELECT UserID FROM User where UserID IN
-            (SELECT Sender_ID FROM Chat WHERE Receiver_ID ='%s')
+            query = '''SELECT UserID FROM user where UserID IN
+            (SELECT Sender_ID FROM chat WHERE Receiver_ID ='%s')
             ''' % (session["doc_ID"])
             cur = myconn.cursor()
             cur.execute(query)
@@ -780,7 +780,7 @@ def addTimeSlot():
         startTime = request.form['startTime']
         endTime = request.form['endTime']
         date = request.form['date']
-        query = "INSERT INTO timeslots (Doc_ID,Start_Time,End_Time,Appt_Date,Availability) VALUES ('%s','%s','%s','%s',%s)"%(doc_ID,startTime,endTime,date,1)
+        query = "INSERT INTO TimeSlots (Doc_ID,Start_Time,End_Time,Appt_Date,Availability) VALUES ('%s','%s','%s','%s',%s)"%(doc_ID,startTime,endTime,date,1)
         cur = myconn.cursor()
         cur.execute(query)
         myconn.commit()
@@ -840,7 +840,7 @@ def request_appointment(Time_ID):
     cur.execute(query)
     Doc_ID = (cur.fetchone())[0]
     try:
-        query = '''INSERT INTO appointment (UserID,Time_ID,doc_ID,MeetLink,PreDescription,PostDescription,Acceptance_Status)
+        query = '''INSERT INTO Appointment (UserID,Time_ID,doc_ID,MeetLink,PreDescription,PostDescription,Acceptance_Status)
         VALUES (%s, %s, '%s','%s','%s','%s',%s)
          ''' % (UserID, Time_ID, Doc_ID, 'www.googlemeet.com', session['preDesc'], '', 0)
         cur.execute(query)
@@ -885,8 +885,8 @@ def view_appointments():
                tslots.Start_Time,tslots.End_Time,tslots.Appt_Date,
                user.UserName , user.UserPhone,
                apt.Time_ID
-        FROM appointment apt 
-        JOIN timeslots tslots on apt.Time_ID = tslots.Time_ID
+        FROM Appointment apt 
+        JOIN TimeSlots tslots on apt.Time_ID = tslots.Time_ID
         JOIN user user on apt.UserID = user.UserID
         WHERE apt.doc_ID='%s' AND (apt.Acceptance_Status=%s OR apt.Acceptance_Status=%s)
         and tslots.Appt_Date >= '%s'
@@ -914,8 +914,8 @@ def appointment_notifications():
                tslots.Start_Time,tslots.End_Time,tslots.Appt_Date,
                user.UserName , user.UserPhone,
                apt.Time_ID
-        FROM appointment apt 
-        JOIN timeslots tslots on apt.Time_ID = tslots.Time_ID
+        FROM Appointment apt 
+        JOIN TimeSlots tslots on apt.Time_ID = tslots.Time_ID
         JOIN user user on apt.UserID = user.UserID
         WHERE apt.UserID='%s' and tslots.Appt_Date >= '%s'
         ORDER BY tslots.Appt_Date ASC''' % (UserID, today)
@@ -944,8 +944,8 @@ def appointment_history():
                 tslots.Start_Time,tslots.End_Time,tslots.Appt_Date,
                 user.UserName , user.UserPhone,
                 apt.Time_ID
-            FROM appointment apt 
-            JOIN timeslots tslots on apt.Time_ID = tslots.Time_ID
+            FROM Appointment apt 
+            JOIN TimeSlots tslots on apt.Time_ID = tslots.Time_ID
             JOIN user user on apt.UserID = user.UserID
             WHERE apt.doc_ID='%s' AND apt.Acceptance_Status=%s
             and tslots.Appt_Date < '%s'
@@ -959,8 +959,8 @@ def appointment_history():
                 tslots.Start_Time,tslots.End_Time,tslots.Appt_Date,
                 user.UserName , user.UserPhone,
                 apt.Time_ID
-            FROM appointment apt 
-            JOIN timeslots tslots on apt.Time_ID = tslots.Time_ID
+            FROM Appointment apt 
+            JOIN TimeSlots tslots on apt.Time_ID = tslots.Time_ID
             JOIN user user on apt.UserID = user.UserID
             WHERE apt.UserID='%s' AND apt.Acceptance_Status=%s
             and tslots.Appt_Date < '%s'
@@ -979,7 +979,7 @@ def updatePostDesc(Time_ID,UserID):
     if request.method == 'POST':
         postDesc = request.form['postDesc']
         query = '''
-        UPDATE appointment SET PostDescription='%s' WHERE 
+        UPDATE Appointment SET PostDescription='%s' WHERE 
         Time_ID=%s AND UserID=%s
         '''%(postDesc,Time_ID,UserID)
 
@@ -995,13 +995,13 @@ def updatePostDesc(Time_ID,UserID):
 def appointment_action(Time_ID, UserID, action):
     print(Time_ID, UserID, action)
     if action == 'Accept':
-        query = '''UPDATE appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s''' % (1, Time_ID, UserID)
+        query = '''UPDATE Appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s''' % (1, Time_ID, UserID)
     elif action == 'Reject':
-        query = "UPDATE appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s" % (2, Time_ID, UserID)
+        query = "UPDATE Appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s" % (2, Time_ID, UserID)
     elif action == 'Cancel':
-        query = "UPDATE appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s" % (3, Time_ID, UserID)
+        query = "UPDATE Appointment SET Acceptance_Status=%s WHERE Time_ID=%s AND UserID=%s" % (3, Time_ID, UserID)
     elif action == 'Dismiss':
-        query = "DELETE FROM appointment WHERE Time_ID=%s AND UserID=%s" % (Time_ID, UserID)
+        query = "DELETE FROM Appointment WHERE Time_ID=%s AND UserID=%s" % (Time_ID, UserID)
         cur = myconn.cursor()
         cur.execute(query)
         myconn.commit()
@@ -1020,14 +1020,14 @@ def appointment_action(Time_ID, UserID, action):
     cur.close()
 
     change_availability = '''UPDATE TimeSlots SET Availability=%s
-    WHERE EXISTS (SELECT * FROM appointment WHERE Time_ID=%s AND Acceptance_Status=%s)
+    WHERE EXISTS (SELECT * FROM Appointment WHERE Time_ID=%s AND Acceptance_Status=%s)
     AND Time_ID = %s''' % (0, Time_ID, 1, Time_ID)
     cur = myconn.cursor()
     cur.execute(change_availability)
     myconn.commit()
     cur.close()
 
-    status1 = "SELECT * FROM appointment WHERE Time_ID=%s AND Acceptance_Status=%s" % (Time_ID, 1)
+    status1 = "SELECT * FROM Appointment WHERE Time_ID=%s AND Acceptance_Status=%s" % (Time_ID, 1)
 
     cur = myconn.cursor()
     cur.execute(status1)
@@ -1037,7 +1037,7 @@ def appointment_action(Time_ID, UserID, action):
         i = i + 1
 
     if i > 0:
-        change_status = '''UPDATE appointment SET Acceptance_Status = %s
+        change_status = '''UPDATE Appointment SET Acceptance_Status = %s
         WHERE Acceptance_Status = %s
         AND Time_ID=%s''' % (2, 0, Time_ID)
         cur = myconn.cursor()
@@ -1199,7 +1199,7 @@ def search_blood(hosp_id):
 @app.route('/search_oxygen/<int:hosp_id>', methods=['GET', 'POST'])
 def search_oxygen(hosp_id):
     hospOxygenDetails = ''
-    query = "SELECT * FROM oxygenDetails WHERE hosp_ID ='%s'" % (hosp_id)
+    query = "SELECT * FROM OxygenDetails WHERE hosp_ID ='%s'" % (hosp_id)
     cur = myconn.cursor()
     cur.execute(query)
     hospOxygenDetails = cur.fetchall()
@@ -1209,7 +1209,7 @@ def search_oxygen(hosp_id):
 @app.route('/search_beds/<int:hosp_id>', methods=['GET', 'POST'])
 def search_beds(hosp_id):
     hospBedsDetails = ''
-    query = "SELECT * FROM bedsDetails WHERE hosp_ID ='%s'" % (hosp_id)
+    query = "SELECT * FROM BedsDetails WHERE hosp_ID ='%s'" % (hosp_id)
     cur = myconn.cursor()
     cur.execute(query)
     hospBedsDetails = cur.fetchall()
@@ -1219,7 +1219,7 @@ def search_beds(hosp_id):
 @app.route('/search_surgery/<int:hosp_id>', methods=['GET', 'POST'])
 def search_surgery(hosp_id):
     hospSurgeryDetails = ''
-    query = "SELECT * FROM surgeryDetails WHERE hosp_ID ='%s'" % (hosp_id)
+    query = "SELECT * FROM SurgeryDetails WHERE hosp_ID ='%s'" % (hosp_id)
     cur = myconn.cursor()
     cur.execute(query)
     hospSurgeryDetails = cur.fetchall()
@@ -1229,7 +1229,7 @@ def search_surgery(hosp_id):
 @app.route('/search_ambulance/<int:hosp_id>', methods=['GET', 'POST'])
 def search_ambulance(hosp_id):
     hospAmbulanceDetails = ''
-    query = "SELECT * FROM ambulancedetails WHERE hosp_ID ='%s'" % (hosp_id)
+    query = "SELECT * FROM AmbulanceDetails WHERE hosp_ID ='%s'" % (hosp_id)
     cur = myconn.cursor()
     cur.execute(query)
     hospAmbulanceDetails = cur.fetchall()
@@ -1374,7 +1374,7 @@ def select_state():
         s = request.form['state']
         session['search_state'] = s
         
-    query = "SELECT DISTINCT hosp_city FROM hospital where hosp_state='%s'"%(session['search_state'])
+    query = "SELECT DISTINCT hosp_city FROM Hospital where hosp_state='%s'"%(session['search_state'])
     cur = myconn.cursor()
     cur.execute(query)
     all_cities = cur.fetchall()
@@ -1394,9 +1394,9 @@ def select_city():
 
             
             if session['search_city']=='All':
-                query = "SELECT * FROM hospital WHERE hosp_state='%s'"%(session['search_state'])
+                query = "SELECT * FROM Hospital WHERE hosp_state='%s'"%(session['search_state'])
             else:
-                query = "SELECT * FROM hospital WHERE hosp_state='%s' AND hosp_city='%s'"%(session['search_state'],session['search_city'])
+                query = "SELECT * FROM Hospital WHERE hosp_state='%s' AND hosp_city='%s'"%(session['search_state'],session['search_city'])
 
             cur = myconn.cursor()
             cur.execute(query)
@@ -1431,7 +1431,7 @@ def vaccine_notifications():
     query = '''
             select vs.appt_date,h.hospName,vs.start_time,vs.end_time,vs.vaccine_type,vs.dose 
             from vaccine_book vb join vaccine_slots vs on vs.vaccine_time_id=vb.vaccine_time_id 
-            join hospital h on h.hosp_id=vs.hosp_id where vb.dose='%s' and vb.UserID='%s' ''' % (1, UserID)
+            join Hospital h on h.hosp_id=vs.hosp_id where vb.dose='%s' and vb.UserID='%s' ''' % (1, UserID)
     cur = myconn.cursor()
     cur.execute(query)
     d1 = cur.fetchall()
@@ -1440,7 +1440,7 @@ def vaccine_notifications():
     query = '''
                 select vs.appt_date,h.hospName,vs.start_time,vs.end_time,vs.vaccine_type,vs.dose 
                 from vaccine_book vb join vaccine_slots vs on vs.vaccine_time_id=vb.vaccine_time_id 
-                join hospital h on h.hosp_id=vs.hosp_id where vb.dose='%s' and vb.UserID='%s' ''' % (2, UserID)
+                join Hospital h on h.hosp_id=vs.hosp_id where vb.dose='%s' and vb.UserID='%s' ''' % (2, UserID)
     cur = myconn.cursor()
     cur.execute(query)
     d2 = cur.fetchall()

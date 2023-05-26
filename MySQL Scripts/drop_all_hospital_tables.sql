@@ -5,15 +5,12 @@ DROP TABLE `SurgeryDetails`;
 DROP TABLE `BedsDetails`;
 DROP TABLE `AmbulanceDetails`;
 DROP TABLE `BloodDetails`;
-
 DROP TABLE `chat`;
-
 DROP TABLE `Doctor_Reviews`;
-
 DROP TABLE `Appointment`;
 DROP TABLE `TimeSlots`;
-DROP TABLE `Doctor`;
-DROP TABLE `User`;
+DROP TABLE `doctor`;
+DROP TABLE `user`;
 DROP TABLE `Hospital`;
 
 
