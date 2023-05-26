@@ -19,7 +19,7 @@ Session(app)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-myconn = mysql.connector.connect(host = "localhost", user = "root",passwd = "amit@186",database="cs207_healthcare_management", auth_plugin='mysql_native_password',buffered=True)
+myconn = mysql.connector.connect(host = "localhost", user = "root",passwd = "insert password",database="cs207_healthcare_management", auth_plugin='mysql_native_password',buffered=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
