@@ -63,6 +63,11 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Create a .env file and add the following variable in the file
+```
+MYSQL_PASSWORD = <your_my_sql_password>
+```
+
 Go To Mysql
 ```
 mysql -u root -p
