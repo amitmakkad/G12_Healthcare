@@ -10,6 +10,9 @@ from werkzeug.utils import redirect
 import datetime
 from textblob import TextBlob
 import arrow
+import os
+from dotenv import load_dotenv
+load_dotenv()
 state=""
 
 app = Flask(__name__)
@@ -17,9 +20,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+mysqlPassword = os.getenv('MYSQL_PASSWORD')
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-myconn = mysql.connector.connect(host = "localhost", user = "root",passwd = "insert password",database="cs207_healthcare_management", auth_plugin='mysql_native_password',buffered=True)
+myconn = mysql.connector.connect(host = "localhost", user = "root",passwd =mysqlPassword, database="cs207_healthcare_management", auth_plugin='mysql_native_password',buffered=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
